@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript">
+		var messageHandler = function(e) {
+		  console.log('Background script says hello.', e.data);
+		};
+
+		window.addEventListener('message', messageHandler);
+	</script>
+</head>
+  <body>
+    <div id="player"></div>
+  </body>
+</html>

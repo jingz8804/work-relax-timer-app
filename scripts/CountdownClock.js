@@ -71,32 +71,32 @@ function clockUpdate(clock, timeLeft){
 }
 var note;
 function notify(){
-	// var havePermission = window.webkitNotifications.checkPermission();
-	// if(havePermission == 0){
-	// 	// 0 means permission allowed
-	// 	note = window.webkitNotifications.createNotification(
-	// 		'http://i.stack.imgur.com/dmHl0.png',
-	// 		"Time's up!",
-	// 		"Click here to stop the alarm!");
+	var havePermission = window.webkitNotifications.checkPermission();
+	if(havePermission == 0){
+		// 0 means permission allowed
+		note = window.webkitNotifications.createNotification(
+			'http://i.stack.imgur.com/dmHl0.png',
+			"Time's up!",
+			"Click here to stop the alarm!");
 
-	// 	note.onclick = function(){
-	// 		// stop the alarm, close the modal, and close itself
-	// 		$(".alarm_holder").empty();
-	// 		$('#myModal').modal('hide');
-	// 		note.cancel();
-	// 	};
-	// 	note.show();
-	// }else{
-	// 	window.webkitNotifications.requestPermission();
-	// }
-	var opt = {
-        type: "basic",
-        title: "Primary Title",
-        message: "Primary message to display",
-        iconUrl: "../dmHl0.png"
-      }; 
-	chrome.notifications.create("note1", opt, function(){});
-	console.log("test");
+		note.onclick = function(){
+			// stop the alarm, close the modal, and close itself
+			$(".alarm_holder").empty();
+			$('#myModal').modal('hide');
+			note.cancel();
+		};
+		note.show();
+	}else{
+		window.webkitNotifications.requestPermission();
+	}
+	// var opt = {
+ //        type: "basic",
+ //        title: "Primary Title",
+ //        message: "Primary message to display",
+ //        iconUrl: "../dmHl0.png"
+ //      }; 
+	// chrome.notifications.create("note1", opt, function(){});
+	// console.log("test");
 
 }
 
@@ -119,9 +119,11 @@ function elementsUpdate(elements, clickedClassPrefix){
 		// }
 		clockSettings[clickedClassPrefix + "AlarmURI"] = videoURI;
 		chrome.storage.sync.set({'setting': clockSettings});
-		elements.playerHolder.append('<div><webview width="250" height="125" src="http://www.youtube.com/embed/'+ videoID +'?controls=0&showinfo=0&rel=0&autoplay=1"></webview></div>')
+		// elements.playerHolder.append('<div><webview width="250" height="125" src="http://www.youtube.com/embed/'+ videoID +'?controls=0&showinfo=0&rel=0&autoplay=1"></webview></div>')
+		// elements.playerHolder.append('<div><iframe src="../sandboxed.html" width="300" height="200"></iframe></div>')
 	}else{
 		elements.playerHolder.append('<audio autoplay controls><source src="audio/audio.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>')
+		document.getElementById('theFrame').contentWindow.postMessage("message", '*');
 	}
 
 	// enable the time input

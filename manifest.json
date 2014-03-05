@@ -7,6 +7,9 @@
      "notifications",
      "webview"
   ],
+  "sandbox": {
+    "pages": ["sandboxed.html"]
+  },
   "description": "The 25-5 work and relaxation cycle",
   "version": "1.0",
   "app": {
