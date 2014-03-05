@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+
+  "name": "test timer",
+  "permissions": [
+     "storage",
+     "notifications",
+     "webview"
+  ],
+  "description": "The 25-5 work and relaxation cycle",
+  "version": "1.0",
+  "app": {
+    "background":{
+      "scripts":["background.js"]
+    }
+  },
+  "icons": { "16": "calculator-16.png", "128": "calculator-128.png" }
+}

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Work/Relax Timer</title>
+  <link rel="shortcut icon" type="image/png" href="icon.png"/>
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+  <div class="container" style="margin-top: 100px;">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row time-input">
+          <p></p>
+          <div id="alarm-dialog">
+
+            <h2>Work</h2>
+
+            <label class="hours">
+              Hours
+              <input type="text" class="work time" id="workHour" placeholder="h"/>
+            </label>
+
+            <label class="minutes">
+              Minutes
+              <input type="text" class="work time" id="workMinute" placeholder="m"/>
+            </label>
+
+            <label class="seconds">
+              Seconds
+              <input type="text" class="work time" id="workSecond" placeholder="s"/>
+            </label>
+
+            <p></p>
+
+            <button type="button" class="btn btn-primary btn-lg work start" id="workStart">START COUNTDOWN</button>
+            <button type="button" class="btn btn-default btn-lg work pause" id="workPause" style="display: none;">PAUSE</button>
+          </div>
+        </div>
+        <p></p>
+      </div>
+
+      <div class="col-md-6">
+        <div class="row time-input">
+          <p></p>
+          <div id="alarm-dialog">
+
+            <h2>Relax</h2>
+
+            <label class="hours">
+              Hours
+              <input type="number" class="relax time" id="relaxHour" placeholder="h"/>
+            </label>
+
+            <label class="minutes">
+              Minutes
+              <input type="number" class="relax time" id="relaxMinute" placeholder="m"/>
+            </label>
+
+            <label class="seconds">
+              Seconds
+              <input type="number" class="relax time" id="relaxSecond" placeholder="s"/>
+            </label>
+
+            <p></p>
+
+            <button type="button" class="btn btn-primary btn-lg relax start" id="relaxStart">START COUNTDOWN</button>
+            <button type="button" class="btn btn-default btn-lg relax pause" id="relaxPause" style="display: none;">PAUSE</button>
+
+          </div>
+        </div>
+        <p></p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6" style="text-align:center;">
+        <form class="form-inline" role="form">
+          <div class="form-group">
+            <label for="alarmURI">Youtube Alarm</label>
+            <input type="url" class="form-control" id="workAlarmURI">
+          </div>
+        </form>
+      </div>
+
+      <div class="col-md-6" style="text-align:center;">
+        <form class="form-inline" role="form">
+          <div class="form-group">
+            <label for="alarmURI">Youtube Alarm</label>
+            <input type="url" class="form-control" id="relaxAlarmURI">
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="row clockArea">
+      <div class="col-md-6">
+        <div class="clock dark" id="workDiv">
+            <div class="display">
+            </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="clock light" id="relaxDiv">
+            <div class="display">
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-6">
+        <div id="workAudio_holder" class="alarm_holder" style="display: none;text-align: center;">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div id="relaxAudio_holder" class="alarm_holder" style="display: none;text-align: center;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Time's up!</h4>
+      </div>
+      <div class="modal-body">
+        <h1>Time to Switch!</h1>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="dismiss">Stop the Alarm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script type="text/javascript" src="scripts/jquery.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script type="text/javascript" src="scripts/bootstrap.min.js"></script>   
+  <script type="text/javascript" src="scripts/CountdownClock.js"></script>
+  <script type="text/javascript" src="scripts/runClock.js"></script>
+</body>
+</html>
