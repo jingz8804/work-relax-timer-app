@@ -13,49 +13,50 @@ $( document ).ready(function() {
     // retrieve user supplied time units
     chrome.storage.sync.get("setting", function(data){
         if(data){
-            if(data.workHours){
-                $("#workHour").val(data.workHours);
+            console.log(data);
+            if(data.setting && data.setting.workHours !== undefined){
+                $("#workHour").val(data.setting.workHours);
             }else{
                 $("#workHour").val(0);
             }
 
-            if(data.workMinutes){
-                $("#workMinute").val(data.workMinutes);
+            if(data.setting && data.setting.workMinutes !== undefined){
+                $("#workMinute").val(data.setting.workMinutes);
             }else{
                 $("#workMinute").val(25);
             }
 
-            if(data.workSeconds){
-                $("#workSecond").val(data.workSeconds);
+            if(data.setting && data.setting.workSeconds !== undefined){
+                $("#workSecond").val(data.setting.workSeconds);
             }else{
                 $("#workSecond").val(0);
             }
 
-            if(data.workAlarmURI){
-                $("#workAlarmURI").val(data.workAlarmURI);
+            if(data.setting && data.setting.workAlarmURI !== undefined){
+                $("#workAlarmURI").val(data.setting.workAlarmURI);
             }
 
             // for the relax clock
-            if(data.relaxHours){
-                $("#relaxHour").val(data.relaxHours);
+            if(data.setting && data.setting.relaxHours !== undefined){
+                $("#relaxHour").val(data.setting.relaxHours);
             }else{
                 $("#relaxHour").val(0);
             }
 
-            if(data.relaxMinutes){
-                $("#relaxMinute").val(data.relaxMinutes);
+            if(data.setting && data.setting.relaxMinutes !== undefined){
+                $("#relaxMinute").val(data.setting.relaxMinutes);
             }else{
                 $("#relaxMinute").val(5);
             }
 
-            if(data.relaxSeconds){
-                $("#relaxSecond").val(data.relaxSeconds);
+            if(data.setting && data.setting.relaxSeconds !== undefined){
+                $("#relaxSecond").val(data.setting.relaxSeconds);
             }else{
                 $("#relaxSecond").val(0);
             }
 
-            if(data.relaxAlarmURI){
-                $("#relaxAlarmURI").val(data.relaxAlarmURI);
+            if(data.setting && data.setting.relaxAlarmURI !== undefined){
+                $("#relaxAlarmURI").val(data.setting.relaxAlarmURI);
             }
         }
     });

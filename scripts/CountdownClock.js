@@ -96,6 +96,7 @@ function notify(){
         iconUrl: "../dmHl0.png"
       }; 
 	chrome.notifications.create("note1", opt, function(){});
+	console.log("test");
 
 }
 
