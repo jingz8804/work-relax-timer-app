@@ -1,4 +1,4 @@
-var clockSettings;
+var clockSettings = {}; // we must initialize it here otherwise we are saving a new object everytime we click the button.
 $( document ).ready(function() {
     var clock;
 
@@ -12,51 +12,76 @@ $( document ).ready(function() {
 
     // retrieve user supplied time units
     chrome.storage.sync.get("setting", function(data){
-        if(data){
+        if(data && data.setting){
             console.log(data);
-            if(data.setting && data.setting.workHours !== undefined){
+            clockSettings = data.setting;
+            if(data.setting.workHours !== undefined){
                 $("#workHour").val(data.setting.workHours);
             }else{
                 $("#workHour").val(0);
             }
 
-            if(data.setting && data.setting.workMinutes !== undefined){
+            if(data.setting.workMinutes !== undefined){
                 $("#workMinute").val(data.setting.workMinutes);
             }else{
                 $("#workMinute").val(25);
             }
 
-            if(data.setting && data.setting.workSeconds !== undefined){
+            if(data.setting.workSeconds !== undefined){
                 $("#workSecond").val(data.setting.workSeconds);
             }else{
                 $("#workSecond").val(0);
             }
 
-            if(data.setting && data.setting.workAlarmURI !== undefined){
-                $("#workAlarmURI").val(data.setting.workAlarmURI);
+            // if(data.setting.workAlarmURI !== undefined){
+            //     $("#workAlarmURI").val(data.setting.workAlarmURI);
+            // }
+
+            if(data.setting.workChosenFile !== undefined){
+                chrome.fileSystem.isRestorable(data.setting.workChosenFile, function(bIsRestorable) {
+                  // the entry is still there, load the content
+                  console.info("Restoring " + data.setting.workChosenFile);
+                  chrome.fileSystem.restoreEntry(data.setting.workChosenFile, function(chosenEntry) {
+                    if (chosenEntry) {
+                      loadFileEntry(chosenEntry, 'work');
+                    }
+                  });
+                });
             }
 
             // for the relax clock
-            if(data.setting && data.setting.relaxHours !== undefined){
+            if(data.setting.relaxHours !== undefined){
                 $("#relaxHour").val(data.setting.relaxHours);
             }else{
                 $("#relaxHour").val(0);
             }
 
-            if(data.setting && data.setting.relaxMinutes !== undefined){
+            if(data.setting.relaxMinutes !== undefined){
                 $("#relaxMinute").val(data.setting.relaxMinutes);
             }else{
                 $("#relaxMinute").val(5);
             }
 
-            if(data.setting && data.setting.relaxSeconds !== undefined){
+            if(data.setting.relaxSeconds !== undefined){
                 $("#relaxSecond").val(data.setting.relaxSeconds);
             }else{
                 $("#relaxSecond").val(0);
             }
 
-            if(data.setting && data.setting.relaxAlarmURI !== undefined){
-                $("#relaxAlarmURI").val(data.setting.relaxAlarmURI);
+            // if(data.setting.relaxAlarmURI !== undefined){
+            //     $("#relaxAlarmURI").val(data.setting.relaxAlarmURI);
+            // }
+
+            if(data.setting.relaxChosenFile !== undefined){
+                chrome.fileSystem.isRestorable(data.setting.relaxChosenFile, function(bIsRestorable) {
+                  // the entry is still there, load the content
+                  console.info("Restoring " + data.setting.relaxChosenFile);
+                  chrome.fileSystem.restoreEntry(data.setting.relaxChosenFile, function(chosenEntry) {
+                    if (chosenEntry) {
+                      loadFileEntry(chosenEntry, 'relax');
+                    }
+                  });
+                });
             }
         }
     });
@@ -67,7 +92,7 @@ $( document ).ready(function() {
     var clickedClassPrefix;
     var unClickedClassPrefix;
     
-    $("button").click(function(){
+    $("button.count").click(function(){
         // check which side is clicked
         var isWork = $(this).hasClass("work");
         clickedClassPrefix = "work";
@@ -124,7 +149,7 @@ $( document ).ready(function() {
             //     localStorage.setItem(clickedClassPrefix + "Seconds", seconds);
             // }
 
-            clockSettings = {};
+            
             clockSettings[clickedClassPrefix + "Hours"] = hours;
             clockSettings[clickedClassPrefix + "Minutes"] = minutes;
             clockSettings[clickedClassPrefix + "Seconds"] = seconds;
@@ -185,6 +210,37 @@ $( document ).ready(function() {
             clock.pause();
         }
 
+    });
+
+    $("button.alarm").click(function(){
+        console.log("clicked");
+
+        var isWork = $(this).hasClass("work");
+        clickedClassPrefix = "work";
+        unClickedClassPrefix = "relax";
+        if(isWork !== true){
+            clickedClassPrefix = "relax";
+            unClickedClassPrefix = "work";
+        }
+
+        var output = $('#'+clickedClassPrefix+"FilePath");
+
+        var accepts = [{
+                mimeTypes: ['audio/*']
+            }];
+            chrome.fileSystem.chooseEntry({type: 'openFile', accepts: accepts}, function(theEntry) {
+                if (!theEntry) {
+                    output.textContent = 'No file selected.';
+                    return;
+                }
+            // use local storage to retain access to this file
+            clockSettings[clickedClassPrefix+'ChosenFile'] = chrome.fileSystem.retainEntry(theEntry);
+            // chrome.storage.local.set({'ChosenFile': chrome.fileSystem.retainEntry(theEntry)});
+            chrome.storage.sync.set({'setting': clockSettings});
+
+            loadFileEntry(theEntry, clickedClassPrefix);
+        });
+
     })
     
 
@@ -197,7 +253,50 @@ $( document ).ready(function() {
 
     $('#myModal').on('hidden.bs.modal', function (e) {
       // stop the alarm
-      $(".alarm_holder").empty();
+      // $(".alarm_holder").empty();
+      // $('audio')[0].pause();
+      // $('audio')[0].currentTime = 0;
+      // $('audio')[1].pause();
+      // $('audio')[1].currentTime = 0;  
       note.cancel();
     })
 });
+
+function loadFileEntry(_chosenEntry, clickedClassPrefix) {
+  chosenEntry = _chosenEntry;
+  chosenEntry.file(function(file) {
+    // check this post for how to get the url of the video.
+    // http://stackoverflow.com/questions/4935101/audio-src-change-with-javascript
+
+    var audio_url = webkitURL.createObjectURL(file);
+    console.log(audio_url);
+    // readAsText(chosenEntry, function(result) {
+    //   textarea.value = result;
+    // });
+    // Update display.
+    // saveFileButton.disabled = false; // allow the user to save the content
+    displayEntryData(chosenEntry, clickedClassPrefix);
+
+    // check this post for how to set audio src 
+    // http://stackoverflow.com/questions/4935101/audio-src-change-with-javascript
+    // var player = $('#'+clickedClassPrefix+"Player");
+    // var player = $('#'+clickedClassPrefix+"Player")[0];
+    // var source = $('#'+clickedClassPrefix+"AlarmSource")[0];
+    // source.src = audio_url;
+    // player.load();
+    var player = document.getElementById(clickedClassPrefix+"Player");
+    player.src = audio_url;
+    // player.load();
+  });
+}
+
+function displayEntryData(theEntry, clickedClassPrefix) {
+  if (theEntry.isFile) {
+    chrome.fileSystem.getDisplayPath(theEntry, function(path) {
+      $('#'+clickedClassPrefix+'FilePath').val(path);
+    });   
+  }
+  else {
+    $('#'+clickedClassPrefix+'FilePath').val(theEntry.fullPath);
+  }
+}

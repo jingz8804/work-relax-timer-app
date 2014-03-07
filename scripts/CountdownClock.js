@@ -81,7 +81,7 @@ function notify(){
 
 		note.onclick = function(){
 			// stop the alarm, close the modal, and close itself
-			$(".alarm_holder").empty();
+			// $(".alarm_holder").empty();
 			$('#myModal').modal('hide');
 			note.cancel();
 		};
@@ -103,6 +103,8 @@ function notify(){
 function elementsUpdate(elements, clickedClassPrefix){
 	// hide the pause button
 	$("#" + clickedClassPrefix + "Pause").hide();
+	// var player = document.getElementById("player");
+	// player.play();
 	
 	// var toEnable = elements.buttonToEnable;
 	// var toDisable = elements.buttonToDisable;
@@ -110,21 +112,24 @@ function elementsUpdate(elements, clickedClassPrefix){
 	// $("button." + toEnable).removeAttr("disabled");
 	// $("button." + toDisable).attr("disabled", "disabled");
 
-	var videoURI = $("#" + clickedClassPrefix + "AlarmURI").val();
-	var matches = videoURI.match(/youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)/);
-	if(matches){
-		var videoID = matches[1];
-		// if (typeof(Storage)!=="undefined"){ // we only save the one that got played
-		// 	localStorage.setItem(clickedClassPrefix + "AlarmURI", videoURI);
-		// }
-		clockSettings[clickedClassPrefix + "AlarmURI"] = videoURI;
-		chrome.storage.sync.set({'setting': clockSettings});
-		// elements.playerHolder.append('<div><webview width="250" height="125" src="http://www.youtube.com/embed/'+ videoID +'?controls=0&showinfo=0&rel=0&autoplay=1"></webview></div>')
-		// elements.playerHolder.append('<div><iframe src="../sandboxed.html" width="300" height="200"></iframe></div>')
-	}else{
-		elements.playerHolder.append('<audio autoplay controls><source src="audio/audio.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>')
-		document.getElementById('theFrame').contentWindow.postMessage("message", '*');
-	}
+	// var videoURI = $("#" + clickedClassPrefix + "AlarmURI").val();
+	// var matches = videoURI.match(/youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)/);
+	// if(matches){
+	// 	var videoID = matches[1];
+	// 	// if (typeof(Storage)!=="undefined"){ // we only save the one that got played
+	// 	// 	localStorage.setItem(clickedClassPrefix + "AlarmURI", videoURI);
+	// 	// }
+	// 	clockSettings[clickedClassPrefix + "AlarmURI"] = videoURI;
+	// 	chrome.storage.sync.set({'setting': clockSettings});
+	// 	// elements.playerHolder.append('<div><webview width="250" height="125" src="http://www.youtube.com/embed/'+ videoID +'?controls=0&showinfo=0&rel=0&autoplay=1"></webview></div>')
+	// 	// elements.playerHolder.append('<div><iframe src="../sandboxed.html" width="300" height="200"></iframe></div>')
+	// }else{
+	// 	elements.playerHolder.append('<audio autoplay controls><source src="audio/audio.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>')
+	// 	// document.getElementById('theFrame').contentWindow.postMessage("message", '*');
+	// }
+
+	var player = document.getElementById(clickedClassPrefix+"Player");
+	player.play();
 
 	// enable the time input
     // $("#"+clickedClassPrefix+"Hour").removeAttr("disabled");

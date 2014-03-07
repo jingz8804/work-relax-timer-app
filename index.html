@@ -44,8 +44,8 @@
 
             <p></p>
 
-            <button type="button" class="btn btn-primary btn-lg work start" id="workStart">START COUNTDOWN</button>
-            <button type="button" class="btn btn-default btn-lg work pause" id="workPause" style="display: none;">PAUSE</button>
+            <button type="button" class="btn btn-primary btn-lg work start count" id="workStart">START COUNTDOWN</button>
+            <button type="button" class="btn btn-default btn-lg work pause count" id="workPause" style="display: none;">PAUSE</button>
           </div>
         </div>
         <p></p>
@@ -75,8 +75,8 @@
 
             <p></p>
 
-            <button type="button" class="btn btn-primary btn-lg relax start" id="relaxStart">START COUNTDOWN</button>
-            <button type="button" class="btn btn-default btn-lg relax pause" id="relaxPause" style="display: none;">PAUSE</button>
+            <button type="button" class="btn btn-primary btn-lg relax start count" id="relaxStart">START COUNTDOWN</button>
+            <button type="button" class="btn btn-default btn-lg relax pause count" id="relaxPause" style="display: none;">PAUSE</button>
 
           </div>
         </div>
@@ -104,6 +104,22 @@
       </div>
     </div>
 
+    <div class="row">
+      <div class="col-md-6" style="text-align:center;">
+        <div class="row">
+          <div class="col-md-3 col-md-offset-2"><button id="workMusic" class="btn btn-default work alarm">Choose Alarm</button></div>
+          <div class="col-md-6"><input type="text" id="workFilePath" class="form-control" readonly></div>
+        </div>
+      </div>
+
+      <div class="col-md-6" style="text-align:center;">
+        <div class="row">
+          <div class="col-md-3  col-md-offset-2"><button id="relaxMusic" class="btn btn-default relax alarm">Choose Alarm</button></div>
+          <div class="col-md-6"><input type="text" id="relaxFilePath" class="form-control" readonly></div>
+        </div>
+      </div>
+    </div>
+
     <div class="row clockArea">
       <div class="col-md-6">
         <div class="clock dark" id="workDiv">
@@ -124,15 +140,16 @@
 
       <div class="col-md-6">
         <div id="workAudio_holder" class="alarm_holder" style="display: none;text-align: center;">
+          <audio id="workPlayer" controls><source id="workAlarmSource" src="" type="audio/mpeg">Your browser does not support the audio element.</audio>
         </div>
       </div>
 
       <div class="col-md-6">
         <div id="relaxAudio_holder" class="alarm_holder" style="display: none;text-align: center;">
+          <audio id="relaxPlayer" controls><source id="relaxAlarmSource" src="" type="audio/mpeg">Your browser does not support the audio element.</audio>
         </div>
       </div>
     </div>
-    <iframe id="theFrame" src="sandboxed.html" style="display: none;"></iframe>
   </div>
 
 <!-- Modal -->
